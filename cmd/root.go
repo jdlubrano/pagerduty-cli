@@ -7,6 +7,7 @@ import (
   "github.com/spf13/cobra"
 
   "github.com/jdlubrano/pagerduty-cli/cmd/on_call"
+  "github.com/jdlubrano/pagerduty-cli/cmd/users"
   "github.com/jdlubrano/pagerduty-cli/version"
 )
 
@@ -19,6 +20,7 @@ func NewRootCmd() *cobra.Command {
   }
 
   cmd.AddCommand(on_call.NewOnCallCmd())
+  cmd.AddCommand(users.NewUsersCmd())
 
   return cmd
 }
