@@ -22,8 +22,10 @@ func NewClient() *ApiClient {
 func (api *ApiClient) Get(path string, queryParams *map[string]string) (*http.Response, error) {
   queryValues := url.Values{}
 
-  for k, v := range *queryParams {
-    queryValues.Add(k, v)
+  if queryParams != nil {
+    for k, v := range *queryParams {
+      queryValues.Add(k, v)
+    }
   }
 
   req, _ := http.NewRequest("GET", baseUrl+queryValues.Encode(), nil)
