@@ -2,6 +2,7 @@ package users
 
 import (
   "fmt"
+  "io/ioutil"
   "github.com/spf13/cobra"
   "github.com/jdlubrano/pagerduty-cli/api_client"
 )
@@ -24,7 +25,21 @@ func NewMeCmd(client *api_client.ApiClient) *cobra.Command {
     Use: "me",
     Short: "Show your user information",
     Run: func(_ *cobra.Command, _ []string) {
-      fmt.Println("ME")
+      resp, err := client.Get("/users/me", nil)
+      defer resp.Body.Close()
+
+      if err != nil {
+        fmt.Println(err)
+        return
+      }
+
+      json, err := ioutil.ReadAll(resp.Body)
+
+      if err != nil {
+        fmt.Println(err)
+      }
+
+      fmt.Println(string(json))
     },
   }
 
