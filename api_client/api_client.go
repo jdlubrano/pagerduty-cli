@@ -28,7 +28,7 @@ func (api *ApiClient) Get(path string, queryParams *map[string]string) (*http.Re
     }
   }
 
-  req, _ := http.NewRequest("GET", baseUrl+queryValues.Encode(), nil)
+  req, _ := http.NewRequest("GET", baseUrl+path+queryValues.Encode(), nil)
   return performRequest(req)
 }
 
