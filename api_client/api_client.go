@@ -3,11 +3,21 @@ package api_client
 import (
   "bytes"
   "encoding/json"
+  "io/ioutil"
   "net/http"
   "net/url"
 
   "github.com/jdlubrano/pagerduty-cli/config"
 )
+
+type Response struct {
+  Status int
+  Body []byte
+}
+
+func (response *Response) ParseInto(dataStruct interface{}) error {
+  return json.Unmarshal(response.Body, dataStruct)
+}
 
 const baseUrl = "https://api.pagerduty.com"
 
@@ -19,7 +29,7 @@ func NewClient() *ApiClient {
   return &ApiClient{baseUrl: baseUrl}
 }
 
-func (api *ApiClient) Get(path string, queryParams *map[string]string) (*http.Response, error) {
+func (api *ApiClient) Get(path string, queryParams *map[string]string) (*Response, error) {
   queryValues := url.Values{}
 
   if queryParams != nil {
@@ -32,7 +42,7 @@ func (api *ApiClient) Get(path string, queryParams *map[string]string) (*http.Re
   return performRequest(req)
 }
 
-func (api *ApiClient) Post(path string, params *map[string]interface{}) (*http.Response, error) {
+func (api *ApiClient) Post(path string, params *map[string]interface{}) (*Response, error) {
   body, err := json.Marshal(params)
 
   if err != nil {
@@ -43,7 +53,7 @@ func (api *ApiClient) Post(path string, params *map[string]interface{}) (*http.R
   return performRequest(req)
 }
 
-func performRequest(request *http.Request) (*http.Response, error) {
+func performRequest(request *http.Request) (*Response, error) {
   client := &http.Client{}
   req := addHeaders(request)
   resp, err := client.Do(req)
@@ -53,7 +63,7 @@ func performRequest(request *http.Request) (*http.Response, error) {
     return nil, err
   }
 
-  return resp, nil
+  return buildResponse(resp)
 }
 
 func addHeaders(request *http.Request) *http.Request {
@@ -62,4 +72,14 @@ func addHeaders(request *http.Request) *http.Request {
   request.Header.Add("Accept", "application/vnd.pagerduty+json;version=2")
   request.Header.Add("Content-Type", "application/json")
   return request
+}
+
+func buildResponse(resp *http.Response) (*Response, error) {
+  body, err := ioutil.ReadAll(resp.Body)
+
+  if err != nil {
+    return nil, err
+  }
+
+  return &Response{Status: resp.StatusCode, Body: body}, nil
 }
