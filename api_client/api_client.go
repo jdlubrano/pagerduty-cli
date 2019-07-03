@@ -22,11 +22,12 @@ func (response *Response) ParseInto(dataStruct interface{}) error {
 const baseUrl = "https://api.pagerduty.com"
 
 type ApiClient struct {
+  apiToken string
   baseUrl string
 }
 
 func NewClient() *ApiClient {
-  return &ApiClient{baseUrl: baseUrl}
+  return &ApiClient{apiToken: config.GetApiToken(), baseUrl: baseUrl}
 }
 
 func (api *ApiClient) Get(path string, queryParams *map[string]string) (*Response, error) {
@@ -38,8 +39,8 @@ func (api *ApiClient) Get(path string, queryParams *map[string]string) (*Respons
     }
   }
 
-  req, _ := http.NewRequest("GET", baseUrl+path+queryValues.Encode(), nil)
-  return performRequest(req)
+  req, _ := http.NewRequest("GET", api.baseUrl+path+queryValues.Encode(), nil)
+  return api.performRequest(req)
 }
 
 func (api *ApiClient) Post(path string, params *map[string]interface{}) (*Response, error) {
@@ -49,13 +50,13 @@ func (api *ApiClient) Post(path string, params *map[string]interface{}) (*Respon
     return nil, err
   }
 
-  req, _ := http.NewRequest("POST", baseUrl+path, bytes.NewBuffer(body))
-  return performRequest(req)
+  req, _ := http.NewRequest("POST", api.baseUrl+path, bytes.NewBuffer(body))
+  return api.performRequest(req)
 }
 
-func performRequest(request *http.Request) (*Response, error) {
+func (api *ApiClient) performRequest(request *http.Request) (*Response, error) {
   client := &http.Client{}
-  req := addHeaders(request)
+  req := api.addHeaders(request)
   resp, err := client.Do(req)
   defer resp.Body.Close()
 
@@ -66,9 +67,8 @@ func performRequest(request *http.Request) (*Response, error) {
   return buildResponse(resp)
 }
 
-func addHeaders(request *http.Request) *http.Request {
-  token := config.GetApiToken()
-  request.Header.Add("Authorization", "Token token="+token)
+func (api *ApiClient) addHeaders(request *http.Request) *http.Request {
+  request.Header.Add("Authorization", "Token token="+api.apiToken)
   request.Header.Add("Accept", "application/vnd.pagerduty+json;version=2")
   request.Header.Add("Content-Type", "application/json")
   return request
