@@ -56,8 +56,8 @@ func (api *ApiClient) Post(path string, params *map[string]interface{}) (*Respon
 
 func (api *ApiClient) performRequest(request *http.Request) (*Response, error) {
   client := &http.Client{}
-  req := api.addHeaders(request)
-  resp, err := client.Do(req)
+  api.addHeaders(request)
+  resp, err := client.Do(request)
   defer resp.Body.Close()
 
   if err != nil {
@@ -67,11 +67,10 @@ func (api *ApiClient) performRequest(request *http.Request) (*Response, error) {
   return buildResponse(resp)
 }
 
-func (api *ApiClient) addHeaders(request *http.Request) *http.Request {
+func (api *ApiClient) addHeaders(request *http.Request) {
   request.Header.Add("Authorization", "Token token="+api.apiToken)
   request.Header.Add("Accept", "application/vnd.pagerduty+json;version=2")
   request.Header.Add("Content-Type", "application/json")
-  return request
 }
 
 func buildResponse(resp *http.Response) (*Response, error) {
