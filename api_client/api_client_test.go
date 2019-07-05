@@ -2,9 +2,10 @@ package api_client
 
 import (
   "fmt"
-  "testing"
+  "io/ioutil"
   "net/http"
   "net/http/httptest"
+  "testing"
 
   "github.com/jdlubrano/pagerduty-cli/config"
 )
@@ -102,5 +103,50 @@ func TestApiClientGetQueryParams(t *testing.T) {
 
   if query != "foo=test+parameter" {
     t.Errorf("Unexpected query - expected: foo=test+parameter, got: %s", query)
+  }
+}
+
+func TestApiClientPost(t *testing.T) {
+  var requestMethod string
+
+  testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    requestMethod = r.Method
+  }))
+
+  defer testServer.Close()
+
+  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient.Post("", nil)
+
+  if requestMethod != "POST" {
+    t.Errorf("Unexpected request method - expected: POST, got: %s", requestMethod)
+  }
+}
+
+func TestApiClientPostParams(t *testing.T) {
+  var path, requestBody string
+
+  params := make(map[string]interface{})
+  params["integer"] = 1
+  params["string"] = "test string"
+  expectedBody := `{"integer":1,"string":"test string"}`
+
+  testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    path = r.URL.Path
+    bodyBytes, _ := ioutil.ReadAll(r.Body)
+    requestBody = string(bodyBytes)
+  }))
+
+  defer testServer.Close()
+
+  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient.Post("/test", &params)
+
+  if path != "/test" {
+    t.Errorf("Unexpected path - expected: /test, got: %s", path)
+  }
+
+  if requestBody != expectedBody {
+    t.Errorf("Unexpected request body - expected: %s, got: %s", expectedBody, requestBody)
   }
 }
