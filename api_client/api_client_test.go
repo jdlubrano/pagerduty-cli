@@ -106,6 +106,18 @@ func TestApiClientGetQueryParams(t *testing.T) {
   }
 }
 
+func TestApiClientGetErrorHandling(t *testing.T) {
+  testServer := httptest.NewServer(nil)
+  testServer.Close()
+
+  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  _, err := apiClient.Get("", nil)
+
+  if err == nil {
+    t.Errorf("Unexpected response - expected: an error, got: nil")
+  }
+}
+
 func TestApiClientPost(t *testing.T) {
   var requestMethod string
 
@@ -148,5 +160,17 @@ func TestApiClientPostParams(t *testing.T) {
 
   if requestBody != expectedBody {
     t.Errorf("Unexpected request body - expected: %s, got: %s", expectedBody, requestBody)
+  }
+}
+
+func TestApiClientPostErrorHandling(t *testing.T) {
+  testServer := httptest.NewServer(nil)
+  testServer.Close()
+
+  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  _, err := apiClient.Post("", nil)
+
+  if err == nil {
+    t.Errorf("Unexpected response - expected: an error, got: nil")
   }
 }

@@ -58,11 +58,12 @@ func (api *ApiClient) performRequest(request *http.Request) (*Response, error) {
   client := &http.Client{}
   api.addHeaders(request)
   resp, err := client.Do(request)
-  defer resp.Body.Close()
 
   if err != nil {
     return nil, err
   }
+
+  defer resp.Body.Close()
 
   return buildResponse(resp)
 }
