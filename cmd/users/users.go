@@ -9,22 +9,9 @@ import (
   "github.com/olekukonko/tablewriter"
 
   "github.com/jdlubrano/pagerduty-cli/api_client"
+  "github.com/jdlubrano/pagerduty-cli/api_client/teams"
+  "github.com/jdlubrano/pagerduty-cli/api_client/users"
 )
-
-type UserData struct {
-  User User `json:"user"`
-}
-
-type User struct {
-  Id    string `json:"id"`
-  Name  string `json:"name"`
-  Teams []Team `json:"teams"`
-}
-
-type Team struct {
-  Id   string `json:"id"`
-  Name string `json:"summary"`
-}
 
 func NewUsersCmd() *cobra.Command {
   usersCmd := &cobra.Command{
@@ -40,29 +27,23 @@ func NewUsersCmd() *cobra.Command {
 }
 
 func NewMeCmd(client *api_client.ApiClient) *cobra.Command {
-  meCmd := &cobra.Command{
+  return &cobra.Command{
     Use: "me",
     Short: "Show your user information",
     Run: func(_ *cobra.Command, _ []string) {
-      resp, err := client.Get("/users/me", nil)
+      user, err := users.GetMe(client)
 
       if err != nil {
         fmt.Println(err)
         return
       }
 
-      var userData UserData
-      resp.ParseInto(&userData)
-      user := userData.User
-
-      buildUsersTable([]User{user}).Render()
+      buildUsersTable([]users.User{user}).Render()
     },
   }
-
-  return meCmd
 }
 
-func buildUsersTable(users []User) *tablewriter.Table {
+func buildUsersTable(users []users.User) *tablewriter.Table {
   table := tablewriter.NewWriter(os.Stdout)
   table.SetHeader([]string{"ID", "Name", "Teams"})
 
@@ -73,7 +54,7 @@ func buildUsersTable(users []User) *tablewriter.Table {
   return table
 }
 
-func extractTeamNames(teams []Team) string {
+func extractTeamNames(teams []teams.Team) string {
   teamNames := make([]string, len(teams))
 
   for i, team := range teams {
