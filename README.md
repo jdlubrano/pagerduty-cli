@@ -16,6 +16,21 @@ have the following information:
 api-token: <your token>
 ```
 
+3.  Download the [latest binary release](https://github.com/jdlubrano/pagerduty-cli/releases)
+and place the binary somewhere in your `$PATH`.
+
+4.  You should be able to run `pagerduty-cli` to see the available commands.
+
+5.  You may wish to create an alias for the CLI as it's full name is admittedly
+verbose.  You can add `alias pd="pagerduty-cli"` to your shell's profile if you
+so choose.
+
+### Upgrading
+
+Upgrading is still a work in progress, so in the meantime, repeat step 3 from
+above with the latest binary.  Eventually I would like this tool to upgrade
+itself, but I haven't yet gotten that far.
+
 ## Development
 
 1.  Checkout this repository.
