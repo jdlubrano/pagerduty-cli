@@ -8,7 +8,7 @@ A CLI for interacting with the PagerDuty API.
 [Advanced Permissions](https://support.pagerduty.com/docs/advanced-permissions).**
 
 1.  Acquire a PagerDuty [developer API token](https://support.pagerduty.com/docs/generating-api-keys#section-generating-a-personal-rest-api-key).
-2.  Create a configuration file at `$HOME/pagerduty.yml`.  The file should
+2.  Create a configuration file at `$HOME/.pagerduty.yml`.  The file should
 have the following information:
 
 ```yaml
