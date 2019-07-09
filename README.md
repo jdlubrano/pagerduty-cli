@@ -33,6 +33,14 @@ Upgrading is still a work in progress, so in the meantime, repeat step 3 from
 above with the latest binary.  Eventually I would like this tool to upgrade
 itself, but I haven't yet gotten that far.
 
+## Usage
+
+This tool, thanks to the awesome [Cobra package](https://github.com/spf13/cobra)
+strives to be self-service and self-documenting.  You can run
+`pagerduty-cli help` with no additional commands to see a list of available
+commands.  You can see additional help for subcommands by running
+`pagerduty-cli help <subcommand>`.
+
 ## Development
 
 1.  Checkout this repository.
