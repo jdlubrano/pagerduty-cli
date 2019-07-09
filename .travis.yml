@@ -1,0 +1,11 @@
+language: go
+
+go:
+  - 1.x
+  - 1.12.x
+
+env:
+  - GO111MODULE=on
+
+before_script:
+  - cp ./.pagerduty.yml.example ~/.pagerduty.yml
