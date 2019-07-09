@@ -98,9 +98,7 @@ func NewTeamCmd(client *api_client.ApiClient) *cobra.Command {
 
       for _, escalationPolicy := range escalationPolicies {
         params := &map[string]string{"escalation_policy_ids[]": escalationPolicy.Id}
-        fmt.Printf("%+v\n", escalationPolicy)
         oncallsForPolicy, err := getOnCalls(client, params)
-        fmt.Printf("%+v\n", oncallsForPolicy)
 
         if err != nil {
           fmt.Println(err)
