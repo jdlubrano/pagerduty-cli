@@ -1,5 +1,7 @@
 # PagerDuty CLI
 
+[![Build Status](https://travis-ci.org/jdlubrano/pagerduty-cli.svg?branch=master)](https://travis-ci.org/jdlubrano/pagerduty-cli)
+
 A CLI for interacting with the PagerDuty API.
 
 ## Installation
