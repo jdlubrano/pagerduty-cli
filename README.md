@@ -46,3 +46,14 @@ commands.  You can see additional help for subcommands by running
 1.  Checkout this repository.
 2.  Run `go build .`
 3.  Run `./pagerduty-cli`
+
+## Releases
+
+1.  Create a new git tag.
+
+```
+$ git tag -a v0.1.0 -m "First release"
+$ git push origin v0.1.0
+```
+
+2.  Run `make release`.
