@@ -11,6 +11,7 @@ type SchedulesData struct {
 type Schedule struct {
   Id string `json:"id"`
   Name string `json:"name"`
+  Summary string `json:"summary"`
   Description string `json:"description"`
 }
 
