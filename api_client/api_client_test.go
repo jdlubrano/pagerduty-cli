@@ -17,12 +17,12 @@ func TestNewClient(t *testing.T) {
   baseUrl := "https://api.pagerduty.com"
   client := NewClient()
 
-  if client.apiToken != config.GetApiToken() {
-    t.Errorf("Unexpected API token - expected: %s, got: %s", config.GetApiToken(), client.apiToken)
+  if client.ApiToken != config.GetApiToken() {
+    t.Errorf("Unexpected API token - expected: %s, got: %s", config.GetApiToken(), client.ApiToken)
   }
 
-  if client.baseUrl != baseUrl {
-    t.Errorf("Unexpected base URL - expected: %s, got: %s", baseUrl, client.baseUrl)
+  if client.BaseUrl != baseUrl {
+    t.Errorf("Unexpected base URL - expected: %s, got: %s", baseUrl, client.BaseUrl)
   }
 }
 
@@ -35,7 +35,7 @@ func TestApiClientResponseStatus(t *testing.T) {
 
   defer testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   resp, _ := apiClient.Get("/test", nil)
 
   if resp.Status != status {
@@ -50,7 +50,7 @@ func TestApiClientResponseBody(t *testing.T) {
 
   defer testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   resp, _ := apiClient.Get("/test", nil)
 
   if string(resp.Body) != testResponseContent {
@@ -73,7 +73,7 @@ func TestApiClientGet(t *testing.T) {
 
   defer testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   apiClient.Get("", nil)
 
   if requestMethod != "GET" {
@@ -94,7 +94,7 @@ func TestApiClientGetQueryParams(t *testing.T) {
 
   defer testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   apiClient.Get("/test", &params)
 
   if path != "/test" {
@@ -110,7 +110,7 @@ func TestApiClientGetErrorHandling(t *testing.T) {
   testServer := httptest.NewServer(nil)
   testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   _, err := apiClient.Get("", nil)
 
   if err == nil {
@@ -127,7 +127,7 @@ func TestApiClientPost(t *testing.T) {
 
   defer testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   apiClient.Post("", nil)
 
   if requestMethod != "POST" {
@@ -151,7 +151,7 @@ func TestApiClientPostParams(t *testing.T) {
 
   defer testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   apiClient.Post("/test", &params)
 
   if path != "/test" {
@@ -167,7 +167,7 @@ func TestApiClientPostErrorHandling(t *testing.T) {
   testServer := httptest.NewServer(nil)
   testServer.Close()
 
-  apiClient := &ApiClient{apiToken: apiToken, baseUrl: testServer.URL}
+  apiClient := &ApiClient{ApiToken: apiToken, BaseUrl: testServer.URL}
   _, err := apiClient.Post("", nil)
 
   if err == nil {

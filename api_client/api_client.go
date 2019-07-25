@@ -22,12 +22,12 @@ func (response *Response) ParseInto(dataStruct interface{}) error {
 const baseUrl = "https://api.pagerduty.com"
 
 type ApiClient struct {
-  apiToken string
-  baseUrl string
+  ApiToken string
+  BaseUrl string
 }
 
 func NewClient() *ApiClient {
-  return &ApiClient{apiToken: config.GetApiToken(), baseUrl: baseUrl}
+  return &ApiClient{ApiToken: config.GetApiToken(), BaseUrl: baseUrl}
 }
 
 func (api *ApiClient) Get(path string, queryParams *map[string]string) (*Response, error) {
@@ -39,7 +39,7 @@ func (api *ApiClient) Get(path string, queryParams *map[string]string) (*Respons
     }
   }
 
-  url := api.baseUrl+path+"?"+queryValues.Encode()
+  url := api.BaseUrl+path+"?"+queryValues.Encode()
   req, _ := http.NewRequest("GET", url, nil)
   return api.performRequest(req)
 }
@@ -51,7 +51,7 @@ func (api *ApiClient) Post(path string, params *map[string]interface{}) (*Respon
     return nil, err
   }
 
-  req, _ := http.NewRequest("POST", api.baseUrl+path, bytes.NewBuffer(body))
+  req, _ := http.NewRequest("POST", api.BaseUrl+path, bytes.NewBuffer(body))
   return api.performRequest(req)
 }
 
@@ -70,7 +70,7 @@ func (api *ApiClient) performRequest(request *http.Request) (*Response, error) {
 }
 
 func (api *ApiClient) addHeaders(request *http.Request) {
-  request.Header.Add("Authorization", "Token token="+api.apiToken)
+  request.Header.Add("Authorization", "Token token="+api.ApiToken)
   request.Header.Add("Accept", "application/vnd.pagerduty+json;version=2")
   request.Header.Add("Content-Type", "application/json")
 }
