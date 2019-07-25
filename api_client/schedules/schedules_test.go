@@ -40,6 +40,7 @@ func TestListForQueryEscalationPolicies(t *testing.T) {
       {
         "id": "S1",
         "name": "Schedule 1",
+        "summary": "Schedule 1 summary",
         "description": "A test schedule"
       }
     ]
@@ -62,6 +63,10 @@ func TestListForQueryEscalationPolicies(t *testing.T) {
 
   if schedule.Name != "Schedule 1" {
     t.Errorf("Unexpected name - expected: Schedule 1, got: %s", schedule.Name)
+  }
+
+  if schedule.Summary != "Schedule 1 summary" {
+    t.Errorf("Unexpected summary - expected: Schedule 1 summary, got: %s", schedule.Summary)
   }
 
   if schedule.Description != "A test schedule" {
