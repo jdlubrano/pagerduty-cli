@@ -4,7 +4,7 @@ import (
   "github.com/spf13/cobra"
 
   "github.com/jdlubrano/pagerduty-cli/api_client"
-  "github.com/jdlubrano/pagerduty-cli/cmd/schedules/overrides"
+  "github.com/jdlubrano/pagerduty-cli/cmd/schedules/schedule_overrides"
 )
 
 func NewSchedulesCmd() *cobra.Command {
