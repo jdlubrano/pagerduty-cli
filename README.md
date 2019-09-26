@@ -49,11 +49,13 @@ commands.  You can see additional help for subcommands by running
 
 ## Releases
 
-1.  Create a new git tag.
+1.  Bump the version in `version/version.go`.  Commit the change to master.
+
+2.  Create a new git tag.
 
 ```
 $ git tag -a v0.1.0 -m "First release"
 $ git push origin v0.1.0
 ```
 
-2.  Run `make release`.
+3.  Run `make release`.
