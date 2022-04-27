@@ -1,6 +1,6 @@
 # PagerDuty CLI
 
-[![Build Status](https://travis-ci.org/jdlubrano/pagerduty-cli.svg?branch=master)](https://travis-ci.org/jdlubrano/pagerduty-cli)
+[![Build Status](https://travis-ci.org/jdlubrano/pagerduty-cli.svg?branch=main)](https://travis-ci.org/jdlubrano/pagerduty-cli)
 
 A CLI for interacting with the PagerDuty API.
 
@@ -49,7 +49,7 @@ commands.  You can see additional help for subcommands by running
 
 ## Releases
 
-1.  Bump the version in `version/version.go`.  Commit the change to master.
+1.  Bump the version in `version/version.go`.  Commit the change to `main`.
 
 2.  Create a new git tag.
 
