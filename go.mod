@@ -8,4 +8,5 @@ require (
 	github.com/olekukonko/tablewriter v0.0.1
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.4.0
+	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 )
