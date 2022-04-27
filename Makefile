@@ -25,4 +25,7 @@ test_release: define_github_token install_goreleaser build
 release: test define_github_token install_goreleaser
 	@goreleaser release --rm-dist
 
-.PHONY: test build setup install_dep help
+update_deps:
+	@go get -u ./... && go get -t -u ./... && go mod tidy
+
+.PHONY: test build setup update_deps help
