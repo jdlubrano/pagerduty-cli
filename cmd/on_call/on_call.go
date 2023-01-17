@@ -159,7 +159,7 @@ func formatTimeForApi(t time.Time) string {
 
 func formatTimeForUser(t time.Time) string {
   tz := time.Now().Location()
-  return t.In(tz).Format("02 Jan 15:04 MST")
+  return t.In(tz).Format("Mon 02 Jan 15:04 MST")
 }
 
 func getOnCalls(client *api_client.ApiClient, params *map[string]string) ([]Oncall, error) {
