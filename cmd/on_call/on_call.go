@@ -108,7 +108,7 @@ func NewTeamCmd(client *api_client.ApiClient) *cobra.Command {
         oncalls = append(oncalls, oncallsForPolicy...)
       }
 
-      oncalls = removeDuplicateSchedules(oncalls)
+      oncalls = removeDuplicateOncalls(oncalls)
       buildOncallsTable(oncalls).Render()
     },
   }
@@ -117,22 +117,6 @@ func NewTeamCmd(client *api_client.ApiClient) *cobra.Command {
   teamCmd.MarkFlagRequired("team")
 
   return teamCmd
-}
-
-func removeDuplicateSchedules(oncalls []Oncall) []Oncall {
-  uniqueOncalls := []Oncall{}
-  schedules := make(map[string]bool)
-
-  for _, oncall := range oncalls {
-    id := oncall.Schedule.Id
-    if !schedules[id] {
-      uniqueOncalls = append(uniqueOncalls, oncall)
-    }
-
-    schedules[id] = true
-  }
-
-  return uniqueOncalls
 }
 
 func buildOncallsTable(oncalls []Oncall) *tablewriter.Table {
@@ -162,6 +146,21 @@ func formatTimeForUser(t time.Time) string {
   return t.In(tz).Format("Mon 02 Jan 15:04 MST")
 }
 
+func removeDuplicateOncalls(oncalls []Oncall) []Oncall {
+  uniqueOncalls := []Oncall{}
+  onCallsMap := make(map[Oncall]bool)
+
+  for _, oncall := range oncalls {
+    if !onCallsMap[oncall] {
+      uniqueOncalls = append(uniqueOncalls, oncall)
+    }
+
+    onCallsMap[oncall] = true
+  }
+
+  return uniqueOncalls
+}
+
 func getOnCalls(client *api_client.ApiClient, params *map[string]string) ([]Oncall, error) {
   resp, err := client.Get("/oncalls", params)
 
@@ -171,5 +170,5 @@ func getOnCalls(client *api_client.ApiClient, params *map[string]string) ([]Onca
 
   var oncallsData OncallsData
   resp.ParseInto(&oncallsData)
-  return oncallsData.Oncalls, nil
+  return removeDuplicateOncalls(oncallsData.Oncalls), nil
 }
