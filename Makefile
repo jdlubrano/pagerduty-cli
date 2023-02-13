@@ -20,7 +20,7 @@ ifeq ($(GITHUB_TOKEN),)
 endif
 
 test_release: define_github_token install_goreleaser build
-	@goreleaser release --skip-publish --rm-dist
+	@goreleaser release --skip-publish --skip-validate --rm-dist
 
 release: test define_github_token install_goreleaser
 	@goreleaser release --rm-dist
